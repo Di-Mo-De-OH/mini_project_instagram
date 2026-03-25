@@ -7,8 +7,12 @@ class UserManager(BaseUserManager):
         """user 생성시 사용될 함수"""
         if not email:
             raise ValueError("올바른 이메일을 입력하세여")
-        user = self.model(email=self.normalize_email(email)) # 이메일의 대문자를 전부 소문자로 변경함
-        user.set_password(password) # 비밀번호 해쉬화 앞에 set을 사용하지 않으면 해쉬화가 안됌
+        user = self.model(
+            email=self.normalize_email(email)
+        )  # 이메일의 대문자를 전부 소문자로 변경함
+        user.set_password(
+            password
+        )  # 비밀번호 해쉬화 앞에 set을 사용하지 않으면 해쉬화가 안됌
         user.is_active = False
         user.save(using=self._db)
         return user
@@ -16,11 +20,10 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password):
         """위에 create_user 함수를 기반으로 admin user 생성을 위한 함수"""
         user = self.create_user(email, password)
-        user.is_admin=True
+        user.is_admin = True
         user.is_active = True
-        user.save(using =self._db)
+        user.save(using=self._db)
         return user
-
 
 
 class User(AbstractBaseUser):
@@ -32,10 +35,10 @@ class User(AbstractBaseUser):
     is_admin = models.BooleanField(default=False)
     nickname = models.CharField("nickname", max_length=20, unique=True)
 
-    objects = UserManager() # 커스텀 매니저 연결
-    USERNAME_FIELD = "email" # 로그인 시 email을 아이디로 사용
-    EMAIL_FIELD  ="email" # 이메일 필드 지정
-    REQUIRED_FIELDS = [] # createsuperuser 시 추가 입력 필드 (없음)
+    objects = UserManager()  # 커스텀 매니저 연결
+    USERNAME_FIELD = "email"  # 로그인 시 email을 아이디로 사용
+    EMAIL_FIELD = "email"  # 이메일 필드 지정
+    REQUIRED_FIELDS = []  # createsuperuser 시 추가 입력 필드 (없음)
 
     class Meta:
         verbose_name = "유저"
@@ -52,18 +55,17 @@ class User(AbstractBaseUser):
     def __str__(self):
         return self.nickname
 
-    def has_perm(self,perm,obj=None):
+    def has_perm(self, perm, obj=None):
         """특정 권한이 있는지 확인하는 메서드"""
         return True
 
-    def has_module_perms(self,app_label):
+    def has_module_perms(self, app_label):
         """특정 앱에 접근 권한이 있는지 체크"""
         return True
 
     @property
     def is_staff(self):
         return self.is_admin
-
 
     @property
     def is_superuser(self):

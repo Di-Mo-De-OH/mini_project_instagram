@@ -16,12 +16,11 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path,include
-from django.views.generic import TemplateView
-
+from django.urls import include, path
+from member.views import SignUpView
 urlpatterns = [
     path("admin/", admin.site.urls),
-    #auth
-    path("accounts/",include("member.urls")),
-
+    # auth
+    path("accounts/", include("member.urls")),
+    path("verify/", SignUpView.verify_email, name="verify"),
 ]

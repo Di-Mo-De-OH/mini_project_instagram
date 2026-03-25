@@ -10,13 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
-from pathlib import Path
 import json
-
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-with open(BASE_DIR/".config_secret"/"secret.json") as f:
+with open(BASE_DIR / ".config_secret" / "secret.json") as f:
     config_secret_str = f.read()
 SECRET = json.loads(config_secret_str)
 
@@ -24,7 +23,7 @@ SECRET = json.loads(config_secret_str)
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY =SECRET['DJANGO_SECRET_KEY']
+SECRET_KEY = SECRET["DJANGO_SECRET_KEY"]
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -33,9 +32,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-
 # Application definition
-
 
 
 INSTALLED_APPS = [
@@ -45,7 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    #own
+    # own
     "member",
     # 3rd party
     "django_extensions",
@@ -129,11 +126,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = "static/"
-STATIC_DIR = BASE_DIR /"static"
+STATIC_DIR = BASE_DIR / "static"
 STATICFILES_DIRS = [
     STATIC_DIR,
 ]
-STATIC_ROOT = BASE_DIR/".static_root"
+STATIC_ROOT = BASE_DIR / ".static_root"
 
-#auth 장고한테 이걸 추적해라 라는걸 알려줌
+# auth 장고한테 이걸 추적해라 라는걸 알려줌
 AUTH_USER_MODEL = "member.User"
+
+# Email
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.naver.com"
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_PORT = 465
+EMAIL_HOST_USER = SECRET["email"]["user"]
+EMAIL_HOST_PASSWORD = SECRET["email"]["password"]
