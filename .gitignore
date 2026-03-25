@@ -43,5 +43,4 @@ __MACOSX/
 dist/
 build/
 
-# poetry
-poetry.lock  # 팀 프로젝트면 올리는 게 좋음 (주석 처리)
+.config_secret/*

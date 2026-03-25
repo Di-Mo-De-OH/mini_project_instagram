@@ -11,16 +11,21 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import json
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+with open(BASE_DIR/".config_secret"/"secret.json") as f:
+    config_secret_str = f.read()
+SECRET = json.loads(config_secret_str)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-*+l2kaku0#u&vv4aw&$mut&&^k!%qs2sdg$c(m*o3#bjzjm94j"
+SECRET_KEY =SECRET['DJANGO_SECRET_KEY']
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -61,7 +66,9 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [
+            BASE_DIR / "templates",
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -122,6 +129,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_DIR = BASE_DIR /"static"
+STATICFILES_DIRS = [
+    STATIC_DIR,
+]
+STATIC_ROOT = BASE_DIR/".static_root"
 
 #auth 장고한테 이걸 추적해라 라는걸 알려줌
 AUTH_USER_MODEL = "member.User"
