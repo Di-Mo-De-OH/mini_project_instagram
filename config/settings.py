@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # own
     "member",
+    "post",
     # 3rd party
     "django_extensions",
 ]
@@ -132,6 +133,10 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = BASE_DIR / ".static_root"
 
+# 미디어 루트
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
 # auth 장고한테 이걸 추적해라 라는걸 알려줌
 AUTH_USER_MODEL = "member.User"
 
@@ -143,3 +148,7 @@ EMAIL_USE_SSL = True
 EMAIL_PORT = 465
 EMAIL_HOST_USER = SECRET["email"]["user"]
 EMAIL_HOST_PASSWORD = SECRET["email"]["password"]
+
+LOGIN_URL = "/accounts/login/"
+LOGOUT_REDIRECT_URL = "/"
+
